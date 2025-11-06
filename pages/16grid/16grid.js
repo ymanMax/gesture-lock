@@ -1,7 +1,7 @@
 Page({
   data: {
     data: [],
-    password: [1, 2, 3, 6, 9],
+    password: [1, 2, 3, 4, 8, 12, 16],
     containerWidth: 600 // 默认值，避免初始加载时组件宽度为0
   },
   onLoad() {

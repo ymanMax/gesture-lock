@@ -10,6 +10,10 @@ Component({
     },
     password: {
       type: Array
+    },
+    rows: {
+      type: Number,
+      value: 3
     }
   },
   data: {
@@ -57,8 +61,10 @@ Component({
     }
   },
   ready() {
+    // 如果containerWidth为0，则使用默认值600
+    const containerWidth = this.data.containerWidth || 600;
     this.setData({
-      gestureLock: new GestureLock(this.data.containerWidth, this.data.cycleRadius)
+      gestureLock: new GestureLock(containerWidth, this.data.cycleRadius, this.data.rows)
     });
     this.refesh();
   }
