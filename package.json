@@ -4,8 +4,7 @@
   "description": "Gesture lock for WeChat Mini Program",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["gesture", "lock", "wechat", "mini-program"],
   "author": "",
