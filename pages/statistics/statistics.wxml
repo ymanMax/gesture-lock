@@ -1,0 +1,12 @@
+<!-- statistics.wxml -->
+<view class="statistics-container">
+  <view class="chart-section">
+    <view class="chart-title">手势锁使用率分布</view>
+    <canvas canvas-id="pieCanvas" class="chart"></canvas>
+  </view>
+  
+  <view class="chart-section">
+    <view class="chart-title">手势锁通过率对比</view>
+    <canvas canvas-id="barCanvas" class="chart"></canvas>
+  </view>
+</view>
