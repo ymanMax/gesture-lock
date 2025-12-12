@@ -2,12 +2,15 @@
   "pages":[
     "pages/index/index",
     "pages/16grid/16grid",
-    "pages/statistics/statistics"
+    "pages/statistics/statistics",
+    "pages/set-password/index",
+    "pages/verify-password/index",
+    "pages/reset-password/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "手势密码锁",
     "navigationBarTextStyle":"black"
   }
 }

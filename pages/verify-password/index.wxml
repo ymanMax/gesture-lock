@@ -1,0 +1,59 @@
+<view class="verify-password-page">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="page-title">手势密码验证</view>
+    <view class="page-subtitle">请输入您的手势密码</view>
+  </view>
+
+  <!-- 消息提示 -->
+  <view class="message-box {{messageType}}" wx:if="{{message}}">
+    {{message}}
+  </view>
+
+  <!-- 错误次数显示 -->
+  <view class="error-count {{errorCount >= maxErrorCount - 2 ? (errorCount >= maxErrorCount - 1 ? 'danger' : 'warning') : ''}}" wx:if="{{errorCount > 0 && errorCount < maxErrorCount}}">
+    已错误 {{errorCount}} 次，还有 {{maxErrorCount - errorCount}} 次机会
+  </view>
+
+  <!-- 锁定状态 -->
+  <view class="lock-section" wx:if="{{isLocked}}">
+    <view class="lock-icon"></view>
+    <view class="lock-title">账户已锁定</view>
+    <view class="lock-desc">由于连续输错密码，您的账户已被暂时锁定</view>
+    <view class="lock-timer">
+      {{lockTime}}秒后可重新尝试
+    </view>
+  </view>
+
+  <!-- 验证中状态 -->
+  <view class="verifying-section" wx:if="{{isVerifying}}">
+    <view class="verifying-spinner"></view>
+    <view class="verifying-text">正在验证密码...</view>
+  </view>
+
+  <!-- 手势密码组件 -->
+  <view class="gesture-container" wx:if="{{!isLocked && !isVerifying}}">
+    <mini-gesture-lock
+      container-width="{{containerWidth}}"
+      cycleRadius="{{70}}"
+      bind:end="onGestureEnd">
+    </mini-gesture-lock>
+  </view>
+
+  <!-- 密码输入提示 -->
+  <view class="password-hint" wx:if="{{!isLocked && !isVerifying}}">
+    请连接至少4个点绘制您的手势密码
+  </view>
+
+  <!-- 忘记密码 -->
+  <view class="forgot-password-section" wx:if="{{!isLocked}}">
+    <text class="forgot-password-btn" bindtap="showForgotPasswordOptions">
+      忘记手势密码？
+    </text>
+  </view>
+
+  <!-- 返回按钮 -->
+  <view class="back-button" wx:if="{{!isLocked}}">
+    <button class="btn btn-secondary" bindtap="goBack">返回</button>
+  </view>
+</view>
