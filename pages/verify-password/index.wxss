@@ -1,0 +1,231 @@
+.verify-password-page {
+  padding: 40rpx;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.page-subtitle {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.message-box {
+  padding: 20rpx 30rpx;
+  border-radius: 8rpx;
+  margin-bottom: 50rpx;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.message-box.success {
+  background-color: #f0f9ff;
+  color: #1890ff;
+  border: 1rpx solid #bae7ff;
+}
+
+.message-box.error {
+  background-color: #fff2f0;
+  color: #ff4d4f;
+  border: 1rpx solid #ffccc7;
+}
+
+.message-box.info {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1rpx solid #d9f7be;
+}
+
+.message-box.warning {
+  background-color: #fff7e6;
+  color: #fa8c16;
+  border: 1rpx solid #ffd591;
+}
+
+.gesture-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50rpx;
+}
+
+/* 锁定状态样式 */
+.lock-section {
+  text-align: center;
+  padding: 60rpx 40rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 40rpx;
+}
+
+.lock-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto 30rpx;
+  background-color: #fff2f0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lock-icon::after {
+  content: '🔒';
+  font-size: 60rpx;
+}
+
+.lock-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.lock-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30rpx;
+}
+
+.lock-timer {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff4d4f;
+}
+
+/* 忘记密码样式 */
+.forgot-password-section {
+  text-align: center;
+  margin-top: auto;
+}
+
+.forgot-password-btn {
+  font-size: 28rpx;
+  color: #1890ff;
+  text-decoration: underline;
+  padding: 15rpx 30rpx;
+  border-radius: 8rpx;
+  transition: background-color 0.3s ease;
+}
+
+.forgot-password-btn:active {
+  background-color: #f0f9ff;
+}
+
+/* 验证状态样式 */
+.verifying-section {
+  text-align: center;
+  padding: 60rpx 40rpx;
+}
+
+.verifying-spinner {
+  width: 80rpx;
+  height: 80rpx;
+  border: 4rpx solid #f3f3f3;
+  border-top: 4rpx solid #1890ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 30rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.verifying-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 密码输入提示 */
+.password-hint {
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+  line-height: 1.5;
+}
+
+/* 错误次数显示 */
+.error-count {
+  text-align: center;
+  font-size: 26rpx;
+  color: #ff4d4f;
+  margin-bottom: 30rpx;
+}
+
+.error-count.warning {
+  color: #fa8c16;
+  font-weight: bold;
+}
+
+.error-count.danger {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 750rpx) {
+  .verify-password-page {
+    padding: 30rpx 20rpx;
+    justify-content: flex-start;
+    padding-top: 100rpx;
+  }
+
+  .page-title {
+    font-size: 36rpx;
+  }
+
+  .lock-section {
+    padding: 40rpx 30rpx;
+  }
+
+  .gesture-container {
+    margin-bottom: 40rpx;
+  }
+
+  .forgot-password-section {
+    margin-top: 60rpx;
+  }
+}
+
+/* 横屏适配 */
+@media screen and (orientation: landscape) {
+  .verify-password-page {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .page-header {
+    flex: 1;
+    margin-right: 40rpx;
+  }
+
+  .gesture-container {
+    flex: 1;
+  }
+
+  .forgot-password-section {
+    position: absolute;
+    bottom: 40rpx;
+    right: 40rpx;
+    margin-top: 0;
+  }
+}

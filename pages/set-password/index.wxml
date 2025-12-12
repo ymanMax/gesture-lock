@@ -1,0 +1,83 @@
+<view class="set-password-page">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="page-title">{{step === 3 ? '密码管理' : '设置手势密码'}}</view>
+    <view class="page-subtitle">{{step === 1 ? '请设置解锁图案' : step === 2 ? '请再次绘制解锁图案' : '管理您的手势密码'}}</view>
+  </view>
+
+  <!-- 消息提示 -->
+  <view class="message-box {{messageType}}" wx:if="{{message}}">
+    {{message}}
+  </view>
+
+  <!-- 步骤指示器 -->
+  <view class="step-indicator" wx:if="{{step !== 3}}">
+    <view class="step-item {{step >= 1 ? (step === 1 ? 'active' : 'completed') : ''}}">
+      <view class="step-number">1</view>
+      <view class="step-label">设置密码</view>
+    </view>
+    <view class="step-line"></view>
+    <view class="step-item {{step >= 2 ? (step === 2 ? 'active' : 'completed') : ''}}">
+      <view class="step-number">2</view>
+      <view class="step-label">确认密码</view>
+    </view>
+  </view>
+
+  <!-- 手势密码组件 -->
+  <view class="gesture-container" wx:if="{{step === 1 || step === 2}}">
+    <mini-gesture-lock
+      container-width="{{containerWidth}}"
+      cycleRadius="{{70}}"
+      bind:end="onGestureEnd">
+    </mini-gesture-lock>
+  </view>
+
+  <!-- 设置安全问题 -->
+  <view class="security-question-section" wx:if="{{showSecurityQuestion}}">
+    <view class="section-title">设置安全问题</view>
+
+    <view class="question-selector">
+      <view class="select-label">选择安全问题</view>
+      <picker value="{{selectedQuestionIndex}}" range="{{securityQuestions}}" range-key="question" bindchange="onQuestionChange" class="question-picker">
+        <view wx:if="{{selectedQuestion}}">{{selectedQuestion}}</view>
+        <view wx:else class="placeholder">请选择安全问题</view>
+      </picker>
+    </view>
+
+    <view class="answer-input-group">
+      <view class="input-label">安全答案</view>
+      <input
+        class="answer-input"
+        placeholder="请输入安全答案"
+        value="{{securityAnswer}}"
+        bindinput="onAnswerInput"
+        maxlength="50">
+      </input>
+    </view>
+
+    <view class="button-group">
+      <button class="btn btn-primary" bindtap="saveSecurityQuestion">保存</button>
+      <button class="btn btn-secondary" bindtap="skipSecurityQuestion">跳过</button>
+    </view>
+
+    <view class="tip-text">设置安全问题后，忘记密码时可通过安全问题重置密码</view>
+  </view>
+
+  <!-- 密码管理操作（已完成设置） -->
+  <view class="completed-section" wx:if="{{step === 3}}">
+    <view class="completed-icon"></view>
+    <view class="completed-title">手势密码已设置</view>
+    <view class="completed-desc">您已成功设置手势密码，可以使用该密码解锁应用</view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons" wx:if="{{step === 3}}">
+    <button class="btn btn-secondary" bindtap="resetPassword">修改密码</button>
+    <button class="btn btn-danger" bindtap="deletePassword">删除密码</button>
+  </view>
+
+  <!-- 返回按钮 -->
+  <view class="back-button">
+    <button class="btn btn-secondary" bindtap="goBack">返回</button>
+  </view>
+</view>
