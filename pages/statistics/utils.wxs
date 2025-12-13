@@ -1,0 +1,78 @@
+// utils.wxs - WXS工具函数
+
+/**
+ * 根据热度值获取热力图节点颜色
+ * @param {number} value 热度值(0-100)
+ * @returns {string} 颜色值
+ */
+function getHeatmapColor(value) {
+  if (value < 30) return '#E0F3FF';
+  if (value < 50) return '#99D6FF';
+  if (value < 70) return '#4DA6FF';
+  if (value < 85) return '#FF9966';
+  return '#FF5C5C';
+}
+
+/**
+ * 根据热度值获取热力图节点大小(rpx)
+ * @param {number} value 热度值(0-100)
+ * @returns {number} 节点大小(rpx)
+ */
+function getHeatmapSize(value) {
+  return 40 + Math.floor(value / 100 * 20);
+}
+
+/**
+ * 计算热力图节点的边距
+ * @param {number} value 热度值(0-100)
+ * @returns {number} 边距大小(rpx)
+ */
+function getHeatmapMargin(value) {
+  var size = getHeatmapSize(value);
+  return (60 - size) / 2;
+}
+
+/**
+ * 计算数组元素的总和
+ * @param {Array} array 数据数组
+ * @returns {number} 总和
+ */
+function sumArray(array) {
+  var sum = 0;
+  for (var i = 0; i < array.length; i++) {
+    sum += array[i].count;
+  }
+  return sum;
+}
+
+/**
+ * 计算正确率
+ * @param {number} successCount 成功次数
+ * @param {number} totalCount 总次数
+ * @returns {string} 正确率百分比(保留1位小数)
+ */
+function calculateAccuracy(successCount, totalCount) {
+  if (totalCount === 0) return '0.0%';
+  var accuracy = ((successCount / totalCount) * 100);
+  // 四舍五入保留1位小数
+  var rounded = Math.round(accuracy * 10) / 10;
+  return rounded.toFixed(1) + '%';
+}
+
+/**
+ * 格式化数字为字符串
+ * @param {number} num 数字
+ * @returns {string} 格式化后的字符串
+ */
+function formatNumber(num) {
+  return num.toString();
+}
+
+module.exports = {
+  getHeatmapColor: getHeatmapColor,
+  getHeatmapSize: getHeatmapSize,
+  getHeatmapMargin: getHeatmapMargin,
+  sumArray: sumArray,
+  calculateAccuracy: calculateAccuracy,
+  formatNumber: formatNumber
+};

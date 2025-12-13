@@ -1,12 +1,100 @@
 <!-- statistics.wxml -->
+<wxs src="./utils.wxs" module="utils" />
+
 <view class="statistics-container">
-  <view class="chart-section">
-    <view class="chart-title">手势锁使用率分布</view>
-    <canvas canvas-id="pieCanvas" class="chart"></canvas>
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">数据统计与分析</text>
+    <button class="refresh-btn" bindtap="refreshData">
+      <text class="refresh-icon">🔄</text>
+      <text class="refresh-text">刷新</text>
+    </button>
   </view>
-  
-  <view class="chart-section">
-    <view class="chart-title">手势锁通过率对比</view>
-    <canvas canvas-id="barCanvas" class="chart"></canvas>
+
+  <!-- 手势模式热力图 -->
+  <view class="section">
+    <view class="section-title">
+      <text class="title-icon">🔥</text>
+      <text class="title-text">手势模式热力图</text>
+    </view>
+    <view class="heatmap-container">
+      <view class="heatmap-grid">
+        <view class="heatmap-row" wx:for="{{heatmapData}}" wx:for-index="rowIndex" wx:key="rowIndex">
+          <view
+            class="heatmap-node"
+            wx:for="{{item}}"
+            wx:for-index="colIndex"
+            wx:key="colIndex"
+            style="
+              width: {{utils.getHeatmapSize(item[colIndex])}}rpx;
+              height: {{utils.getHeatmapSize(item[colIndex])}}rpx;
+              background-color: {{utils.getHeatmapColor(item[colIndex])}};
+              margin: {{utils.getHeatmapMargin(item[colIndex])}}rpx;
+            "
+          >
+            <text class="heatmap-value">{{item[colIndex]}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="heatmap-legend">
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #E0F3FF;"></view>
+          <text class="legend-text">低</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #4DA6FF;"></view>
+          <text class="legend-text">中</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background-color: #FF5C5C;"></view>
+          <text class="legend-text">高</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 解锁时间分布 -->
+  <view class="section">
+    <view class="section-title">
+      <text class="title-icon">⏱️</text>
+      <text class="title-text">解锁时间分布</text>
+    </view>
+    <canvas canvas-id="unlockTimeCanvas" class="chart-canvas"></canvas>
+  </view>
+
+  <!-- 错误模式分析 -->
+  <view class="section">
+    <view class="section-title">
+      <text class="title-icon">⚠️</text>
+      <text class="title-text">错误模式分析</text>
+    </view>
+    <canvas canvas-id="errorPatternCanvas" class="chart-canvas"></canvas>
+  </view>
+
+  <!-- 统计摘要 -->
+  <view class="section">
+    <view class="section-title">
+      <text class="title-icon">📊</text>
+      <text class="title-text">统计摘要</text>
+    </view>
+    <view class="summary-container">
+      <view class="summary-item">
+        <view class="summary-number">{{utils.formatNumber(utils.sumArray(unlockTimeData))}}</view>
+        <view class="summary-label">总解锁次数</view>
+      </view>
+      <view class="summary-item">
+        <view class="summary-number">{{utils.formatNumber(utils.sumArray(errorPatternData))}}</view>
+        <view class="summary-label">总错误次数</view>
+      </view>
+      <view class="summary-item">
+        <view class="summary-number">
+          {{utils.calculateAccuracy(
+            utils.sumArray(unlockTimeData) - utils.sumArray(errorPatternData),
+            utils.sumArray(unlockTimeData)
+          )}}
+        </view>
+        <view class="summary-label">正确率</view>
+      </view>
+    </view>
   </view>
 </view>
