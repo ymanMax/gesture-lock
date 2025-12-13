@@ -1,8 +1,20 @@
+.gesture-lock-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+
 .gesture-lock {
   margin: 0 auto;
   position: relative;
   box-sizing: border-box;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.gesture-lock.disabled {
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .gesture-lock .cycle {
@@ -35,4 +47,100 @@
 .gesture-lock.error .cycle.check, .gesture-lock.error .cycle.check:after,
 .gesture-lock.error .line {
   border-color: #ffa197;
+}
+
+/* Locked overlay */
+.locked-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.locked-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.locked-content {
+  text-align: center;
+  color: #fff;
+}
+
+.locked-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.locked-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+}
+
+.locked-time {
+  font-size: 28rpx;
+  color: #ff6b6b;
+}
+
+/* Peep-proof overlay */
+.peep-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 90;
+  backdrop-filter: blur(20rpx);
+}
+
+.peep-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.peep-text {
+  font-size: 28rpx;
+  color: #fff;
+  text-align: center;
+}
+
+/* Attempts indicator */
+.attempts-indicator {
+  width: 100%;
+  text-align: center;
+}
+
+.attempts-text {
+  font-size: 26rpx;
+  color: #ff6b6b;
+}
+
+/* Complexity indicator */
+.complexity-indicator {
+  width: 100%;
+  text-align: center;
+}
+
+.complexity-text {
+  font-size: 26rpx;
+  color: #4ecdc4;
 }

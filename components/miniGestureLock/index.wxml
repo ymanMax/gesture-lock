@@ -1,11 +1,93 @@
-<view class="gesture-lock {{error?'error':''}}" style="width:{{containerWidth + 'rpx'}};height:{{containerWidth +'rpx'}}" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+<wxs module="utils">
+  var ceil = function(value) {
+    return Math.ceil(value);
+  }
 
-  <!-- 9 个圆 -->
-  <view class="cycle {{item.check?'check':''}}" wx:for="{{circleArray}}" wx:for-index="i" wx:for-item="item" wx:key="i" style="left:{{item.style.left}};top:{{item.style.top}};width:{{item.style.width}};height:{{item.style.width}}"></view>
+  var formatComplexityLevel = function(level) {
+    if (level === 'low') {
+      return '低';
+    } else if (level === 'medium') {
+      return '中';
+    } else if (level === 'high') {
+      return '高';
+    }
+    return '';
+  }
 
-  <!-- 已激活锁之间的线段 -->
-  <view class="line" wx:for="{{lineArray}}" wx:for-index="i" wx:for-item="item" wx:key="i" style="left:{{item.activeLeft}};top:{{item.activeTop}};width:{{item.activeWidth}};transform:rotate({{item.activeRotate}});"></view>
+  var getLockedOverlayClass = function(isLocked) {
+    return isLocked ? 'show' : '';
+  }
 
-  <!-- 最后一个激活的锁与当前位置之间的线段 -->
-  <view class="line" style="left:{{activeLine.activeLeft}};top:{{activeLine.activeTop}};width:{{activeLine.activeWidth}};transform:rotate({{activeLine.activeRotate}});"></view>
+  var getPeepOverlayClass = function(peepProof, isInputting) {
+    return peepProof && isInputting ? 'show' : '';
+  }
+
+  var getGestureLockClass = function(error, isLocked) {
+    var classes = [];
+    if (error) {
+      classes.push('error');
+    }
+    if (isLocked) {
+      classes.push('disabled');
+    }
+    return classes.join(' ');
+  }
+
+  var getCycleClass = function(check) {
+    return check ? 'check' : '';
+  }
+
+  module.exports = {
+    ceil: ceil,
+    formatComplexityLevel: formatComplexityLevel,
+    getLockedOverlayClass: getLockedOverlayClass,
+    getPeepOverlayClass: getPeepOverlayClass,
+    getGestureLockClass: getGestureLockClass,
+    getCycleClass: getCycleClass
+  };
+</wxs>
+
+<view class="gesture-lock-wrapper">
+  <!-- Locked overlay -->
+  <view class="locked-overlay {{utils.getLockedOverlayClass(isLocked)}}" wx:if="{{isLocked}}">
+    <view class="locked-content">
+      <view class="locked-icon">🔒</view>
+      <view class="locked-text">已锁定</view>
+      <view class="locked-time">
+        {{utils.ceil(remainingLockTime / 1000)}}秒后重试
+      </view>
+    </view>
+  </view>
+
+  <!-- Peep-proof overlay -->
+  <view class="peep-overlay {{utils.getPeepOverlayClass(peepProof, isInputting)}}" wx:if="{{peepProof}}">
+    <view class="peep-text">手势输入中...</view>
+  </view>
+
+  <!-- Gesture lock -->
+  <view class="gesture-lock {{utils.getGestureLockClass(error, isLocked)}}" style="width:{{containerWidth + 'rpx'}};height:{{containerWidth +'rpx'}}" bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+
+    <!-- 9 个圆 -->
+    <view class="cycle {{utils.getCycleClass(item.check)}}" wx:for="{{circleArray}}" wx:for-index="i" wx:for-item="item" wx:key="i" style="left:{{item.style.left}};top:{{item.style.top}};width:{{item.style.width}};height:{{item.style.width}}"></view>
+
+    <!-- 已激活锁之间的线段 -->
+    <view class="line" wx:for="{{lineArray}}" wx:for-index="i" wx:for-item="item" wx:key="i" style="left:{{item.activeLeft}};top:{{item.activeTop}};width:{{item.activeWidth}};transform:rotate({{item.activeRotate}});"></view>
+
+    <!-- 最后一个激活的锁与当前位置之间的线段 -->
+    <view class="line" style="left:{{activeLine.activeLeft}};top:{{activeLine.activeTop}};width:{{activeLine.activeWidth}};transform:rotate({{activeLine.activeRotate}});"></view>
+  </view>
+
+  <!-- Failed attempts indicator -->
+  <view class="attempts-indicator" wx:if="{{failedAttempts > 0}}">
+    <view class="attempts-text">
+      错误尝试: {{failedAttempts}}/{{maxAttempts}}
+    </view>
+  </view>
+
+  <!-- Complexity indicator -->
+  <view class="complexity-indicator" wx:if="{{complexity > 0}}">
+    <view class="complexity-text">
+      复杂度: {{complexity}}分 ({{utils.formatComplexityLevel(complexityLevel)}})
+    </view>
+  </view>
 </view>
