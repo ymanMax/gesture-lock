@@ -2,7 +2,8 @@
   "pages":[
     "pages/index/index",
     "pages/16grid/16grid",
-    "pages/statistics/statistics"
+    "pages/statistics/statistics",
+    "pages/settings/settings"
   ],
   "window":{
     "backgroundTextStyle":"light",

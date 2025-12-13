@@ -1,0 +1,111 @@
+<!--settings.wxml-->
+<view class="settings-container">
+  <!-- 页面标题 -->
+  <view class="settings-header">
+    <text class="settings-title">手势锁设置</text>
+    <text class="settings-subtitle">个性化您的解锁体验</text>
+  </view>
+
+  <!-- 主题选择 -->
+  <view class="settings-section">
+    <view class="section-title">
+      <text class="title-text">视觉主题</text>
+      <text class="title-icon">🎨</text>
+    </view>
+    <view class="theme-grid">
+      <view
+        wx:for="{{themes}}"
+        wx:key="name"
+        class="theme-item {{currentTheme === item.name ? 'active' : ''}}"
+        data-theme="{{item.name}}"
+        bindtap="onThemeChange"
+      >
+        <view class="theme-icon">{{item.icon}}</view>
+        <view class="theme-title">{{item.title}}</view>
+        <view class="theme-indicator {{currentTheme === item.name ? 'show' : ''}}">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 网格大小 -->
+  <view class="settings-section">
+    <view class="section-title">
+      <text class="title-text">解锁难度</text>
+      <text class="title-icon">🔒</text>
+    </view>
+    <view class="grid-list">
+      <view
+        wx:for="{{gridSizes}}"
+        wx:key="rows"
+        class="grid-item {{currentGridSize === item.rows ? 'active' : ''}}"
+        data-gridsize="{{item.rows}}"
+        bindtap="onGridSizeChange"
+      >
+        <view class="grid-info">
+          <text class="grid-title">{{item.title}}</text>
+          <text class="grid-desc">{{item.desc}}</text>
+        </view>
+        <view class="grid-check {{currentGridSize === item.rows ? 'active' : ''}}">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视觉效果 -->
+  <view class="settings-section">
+    <view class="section-title">
+      <text class="title-text">视觉效果</text>
+      <text class="title-icon">✨</text>
+    </view>
+    <view class="effect-list">
+      <view
+        wx:for="{{effects}}"
+        wx:key="name"
+        class="effect-item"
+        data-effect="{{item.name}}"
+        bindtap="onEffectToggle"
+      >
+        <view class="effect-info">
+          <text class="effect-title">{{item.title}}</text>
+        </view>
+        <view class="toggle-switch {{item.enabled ? 'on' : 'off'}}">
+          <view class="toggle-knob {{item.enabled ? 'on' : 'off'}}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 反馈设置 -->
+  <view class="settings-section">
+    <view class="section-title">
+      <text class="title-text">反馈设置</text>
+      <text class="title-icon">🔊</text>
+    </view>
+    <view class="feedback-list">
+      <view class="feedback-item" bindtap="onSoundToggle">
+        <view class="feedback-info">
+          <text class="feedback-title">解锁音效</text>
+          <text class="feedback-desc">成功/失败时播放音效</text>
+        </view>
+        <view class="toggle-switch {{feedback.sound ? 'on' : 'off'}}">
+          <view class="toggle-knob {{feedback.sound ? 'on' : 'off'}}"></view>
+        </view>
+      </view>
+      <view class="feedback-item" bindtap="onVibrateToggle">
+        <view class="feedback-info">
+          <text class="feedback-title">震动反馈</text>
+          <text class="feedback-desc">成功/失败时震动提醒</text>
+        </view>
+        <view class="toggle-switch {{feedback.vibrate ? 'on' : 'off'}}">
+          <view class="toggle-knob {{feedback.vibrate ? 'on' : 'off'}}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 重置按钮 -->
+  <view class="settings-footer">
+    <button class="reset-button" bindtap="onReset">
+      <text class="reset-text">重置为默认设置</text>
+    </button>
+  </view>
+</view>
