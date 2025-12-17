@@ -1,5 +1,36 @@
 <view class="index-page">
-  <mini-gesture-lock container-width="{{containerWidth}}" cycleRadius="{{70}}" bind:end="onEnd" password="{{password}}"></mini-gesture-lock>
-  <view class="result">{{data}}</view>
-  <view class="result">正确密码是：12369</view>
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <view class="title">手势解锁挑战</view>
+    <view class="subtitle">体验全新的手势互动玩法</view>
+  </view>
+
+  <!-- 手势演示区域 -->
+  <view class="gesture-demo-section">
+    <view class="section-title">试试手势解锁</view>
+    <mini-gesture-lock container-width="{{containerWidth}}" cycleRadius="{{70}}" bind:end="onEnd" password="{{password}}"></mini-gesture-lock>
+    <view class="demo-hint">正确密码：1 → 2 → 3 → 6 → 9</view>
+  </view>
+
+  <!-- 功能导航 -->
+  <view class="feature-nav">
+    <view class="nav-title">功能菜单</view>
+    <view class="nav-grid">
+      <view class="nav-item" bindtap="goToChallenge">
+        <view class="nav-icon">🎯</view>
+        <view class="nav-text">手势挑战</view>
+        <view class="nav-desc">挑战你的解锁速度</view>
+      </view>
+      <view class="nav-item" bindtap="goToRanking">
+        <view class="nav-icon">🏆</view>
+        <view class="nav-text">排行榜</view>
+        <view class="nav-desc">看看谁是手势达人</view>
+      </view>
+      <view class="nav-item" bindtap="goToShare">
+        <view class="nav-icon">✋</view>
+        <view class="nav-text">手势分享</view>
+        <view class="nav-desc">创建并分享你的专属手势</view>
+      </view>
+    </view>
+  </view>
 </view>

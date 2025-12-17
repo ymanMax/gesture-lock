@@ -1,0 +1,165 @@
+<view class="container">
+  <!-- 创建手势区域 -->
+  <view class="create-section" wx:if="{{creating}}">
+    <view class="section-header">
+      <view class="title">创建自定义手势</view>
+      <view class="subtitle">绘制你的专属手势图案</view>
+    </view>
+
+    <!-- 行数选择 -->
+    <view class="rows-selector">
+      <view class="selector-label">选择手势网格：</view>
+      <view class="rows-options">
+        <view class="option {{selectedRows === 3 ? 'active' : ''}}" bindtap="selectRows" data-rows="3">3×3</view>
+        <view class="option {{selectedRows === 4 ? 'active' : ''}}" bindtap="selectRows" data-rows="4">4×4</view>
+      </view>
+    </view>
+
+    <!-- 手势绘制区域 -->
+    <view class="gesture-container">
+      <mini-gesture-lock
+        container-width="{{containerWidth}}"
+        cycle-radius="{{cycleRadius}}"
+        rows="{{selectedRows}}"
+        bind:end="onGestureComplete"
+      ></mini-gesture-lock>
+      <view class="gesture-hint" wx:if="{{currentGesture.length > 0}}">
+        已连接 {{currentGesture.length}} 个点
+      </view>
+      <view class="gesture-hint" wx:else>
+        请绘制你的手势图案（至少连接4个点）
+      </view>
+    </view>
+
+    <!-- 手势信息填写 -->
+    <view class="info-form">
+      <view class="form-item">
+        <view class="label required">手势名称</view>
+        <input
+          class="input"
+          placeholder="给你的手势起个名字"
+          value="{{gestureName}}"
+          bindinput="onNameInput"
+          maxlength="20"
+        />
+      </view>
+
+      <view class="form-item">
+        <view class="label">手势描述</view>
+        <input
+          class="input"
+          placeholder="描述一下这个手势的特点"
+          value="{{gestureDescription}}"
+          bindinput="onDescriptionInput"
+          maxlength="50"
+        />
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="btn btn-secondary" bindtap="cancelCreate">取消</button>
+      <button
+        class="btn btn-primary"
+        bindtap="saveCustomGesture"
+        disabled="{{!currentGesture || !gestureName || saving}}"
+        loading="{{saving}}"
+      >
+        {{saving ? '保存中...' : '保存手势'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 手势列表区域 -->
+  <view class="gesture-list-section" wx:else>
+    <view class="section-header">
+      <view class="title">我的手势库</view>
+      <view class="subtitle">{{customGestures.length}} 个自定义手势</view>
+    </view>
+
+    <!-- 新建手势按钮 -->
+    <view class="create-btn-container">
+      <button class="create-btn" bindtap="startCreate">
+        <view class="btn-icon">+</view>
+        <view class="btn-text">创建新手势</view>
+      </button>
+    </view>
+
+    <!-- 导入手势按钮 -->
+    <view class="import-btn-container">
+      <button class="import-btn" bindtap="importGesture">
+        <view class="btn-icon">📥</view>
+        <view class="btn-text">导入手势</view>
+      </button>
+    </view>
+
+    <!-- 手势列表 -->
+    <view class="gesture-list" wx:if="{{customGestures.length > 0}}">
+      <view class="gesture-item" wx:for="{{customGestures}}" wx:key="id">
+        <view class="gesture-info">
+          <view class="gesture-thumb" bindtap="previewGesture" data-gesture="{{item}}">
+            <image src="{{item.previewImage || '/images/default-preview.png'}}" mode="aspectFill"></image>
+          </view>
+          <view class="gesture-details">
+            <view class="gesture-name">{{item.name}}</view>
+            <view class="gesture-meta">
+              <text class="meta-item">
+                <text wx:if="{{item.rows === 3}}">3×3</text>
+                <text wx:if="{{item.rows === 4}}">4×4</text>
+              </text>
+              <text class="meta-item">•</text>
+              <text class="meta-item">{{item.gesture.length}} 个点</text>
+              <text class="meta-item">•</text>
+              <text class="meta-item">{{item.shareCount}} 次分享</text>
+            </view>
+            <view class="gesture-description" wx:if="{{item.description}}">{{item.description}}</view>
+            <view class="gesture-time">{{item.createdAt > 0 ? formatTime(item.createdAt) : '刚刚创建'}}</view>
+          </view>
+        </view>
+
+        <!-- 分享操作 -->
+        <view class="gesture-actions">
+          <view class="action-item" bindtap="shareToFriend" data-gesture="{{item}}">
+            <view class="action-icon">👥</view>
+            <view class="action-text">分享给朋友</view>
+          </view>
+          <view class="action-item" bindtap="copyShareLink" data-gesture="{{item}}">
+            <view class="action-icon">🔗</view>
+            <view class="action-text">复制链接</view>
+          </view>
+          <view class="action-item" bindtap="exportAsImage" data-gesture="{{item}}" wx:if="{{!exporting}}">
+            <view class="action-icon">🖼️</view>
+            <view class="action-text">导出图片</view>
+          </view>
+          <view class="action-item disabled" wx:if="{{exporting}}">
+            <view class="action-icon">⏳</view>
+            <view class="action-text">生成中...</view>
+          </view>
+          <view class="action-item danger" bindtap="deleteGesture" data-id="{{item.id}}">
+            <view class="action-icon">🗑️</view>
+            <view class="action-text">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{customGestures.length === 0}}">
+      <view class="empty-icon">✋</view>
+      <view class="empty-text">还没有创建自定义手势</view>
+      <view class="empty-desc">创建你的专属手势，与朋友分享挑战吧！</view>
+      <button class="empty-action-btn" bindtap="startCreate">
+        <view class="btn-icon">+</view>
+        <view class="btn-text">立即创建</view>
+      </button>
+    </view>
+  </view>
+
+  <!-- 预览弹窗 -->
+  <view class="preview-overlay" wx:if="{{showPreview}}" bindtap="closePreview">
+    <view class="preview-content" catchtap="noop">
+      <image src="{{previewImage}}" mode="aspectFit" class="preview-image"></image>
+      <button class="close-btn" bindtap="closePreview">关闭</button>
+    </view>
+  </view>
+</view>

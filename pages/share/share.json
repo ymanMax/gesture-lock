@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "手势分享",
+  "navigationBarBackgroundColor": "#667eea",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#667eea",
+  "usingComponents": {
+    "mini-gesture-lock": "../../components/miniGestureLock/index"
+  }
+}
