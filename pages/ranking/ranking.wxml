@@ -1,0 +1,123 @@
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <view class="title">排行榜</view>
+    <view class="subtitle">看看谁是手势达人</view>
+  </view>
+
+  <!-- 排行榜类型切换 -->
+  <view class="tab-container">
+    <view class="tab {{currentTab === 'speed' ? 'active' : ''}}" bindtap="switchTab" data-tab="speed">
+      <view class="tab-icon">⚡</view>
+      <view class="tab-text">最快解锁</view>
+    </view>
+    <view class="tab {{currentTab === 'accuracy' ? 'active' : ''}}" bindtap="switchTab" data-tab="accuracy">
+      <view class="tab-icon">🎯</view>
+      <view class="tab-text">最高连续正确</view>
+    </view>
+  </view>
+
+  <!-- 最快解锁排行榜 -->
+  <view class="ranking-list" wx:if="{{currentTab === 'speed'}}">
+    <view class="ranking-item" wx:for="{{speedRanking}}" wx:key="index">
+      <view class="rank-number {{item.rank <= 3 ? 'top-three' : ''}}">{{item.rank}}</view>
+      <view class="user-avatar">
+        <image src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+      </view>
+      <view class="user-info">
+        <view class="user-name">{{item.nickname || '匿名用户'}}</view>
+        <view class="user-desc">
+          <text wx:if="{{item.rows === 3}}">3×3手势</text>
+          <text wx:if="{{item.rows === 4}}">4×4手势</text>
+          <text>• {{item.gestureLength}}个点</text>
+        </view>
+      </view>
+      <view class="score-info">
+        <view class="score">
+          <text class="score-value">{{(item.bestTime / 1000).toFixed(2)}}</text>
+          <text class="score-unit">秒</text>
+        </view>
+        <view class="badge" wx:if="{{item.rank === 1}}">🏆</view>
+        <view class="badge" wx:if="{{item.rank === 2}}">🥈</view>
+        <view class="badge" wx:if="{{item.rank === 3}}">🥉</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最高连续正确排行榜 -->
+  <view class="ranking-list" wx:if="{{currentTab === 'accuracy'}}">
+    <view class="ranking-item" wx:for="{{accuracyRanking}}" wx:key="index">
+      <view class="rank-number {{item.rank <= 3 ? 'top-three' : ''}}">{{item.rank}}</view>
+      <view class="user-avatar">
+        <image src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+      </view>
+      <view class="user-info">
+        <view class="user-name">{{item.nickname || '匿名用户'}}</view>
+        <view class="user-desc">
+          <text>共挑战{{item.totalChallenges}}次</text>
+          <text>• 成功率{{item.successRate}}%</text>
+        </view>
+      </view>
+      <view class="score-info">
+        <view class="score">
+          <text class="score-value">{{item.continuousCorrect}}</text>
+          <text class="score-unit">次</text>
+        </view>
+        <view class="badge" wx:if="{{item.rank === 1}}">🏆</view>
+        <view class="badge" wx:if="{{item.rank === 2}}">🥈</view>
+        <view class="badge" wx:if="{{item.rank === 3}}">🥉</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的排名 -->
+  <view class="my-rank-section">
+    <view class="section-title">我的排名</view>
+    <view class="my-rank-card">
+      <view class="rank-left">
+        <view class="user-avatar large">
+          <image src="{{myInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+        </view>
+        <view class="user-info">
+          <view class="user-name">{{myInfo.nickname || '点击登录'}}</view>
+          <view class="rank-text">
+            <text wx:if="{{currentTab === 'speed'}}">最快: {{(myInfo.bestTime / 1000).toFixed(2)}}秒</text>
+            <text wx:if="{{currentTab === 'accuracy'}}">连续正确: {{myInfo.continuousCorrect}}次</text>
+          </view>
+        </view>
+      </view>
+      <view class="rank-right">
+        <view class="rank-number {{myInfo.rank <= 10 ? 'top-ten' : ''}}">{{myInfo.rank > 0 ? myInfo.rank : '-'}}</view>
+        <view class="rank-desc" wx:if="{{myInfo.rank === 0}}">暂无排名</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="statistics-section">
+    <view class="section-title">全局统计</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <view class="stat-number">{{totalPlayers}}</view>
+        <view class="stat-label">参与玩家</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-number">{{totalChallenges}}</view>
+        <view class="stat-label">总挑战次数</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-number">{{totalSuccess}}</view>
+        <view class="stat-label">成功解锁</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录提示 -->
+  <view class="login-prompt" wx:if="{{!hasUserInfo}}">
+    <view class="prompt-content">
+      <view class="prompt-icon">🔐</view>
+      <view class="prompt-text">登录后即可参与排行榜</view>
+      <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">立即登录</button>
+    </view>
+  </view>
+</view>

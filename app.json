@@ -2,12 +2,15 @@
   "pages":[
     "pages/index/index",
     "pages/16grid/16grid",
-    "pages/statistics/statistics"
+    "pages/statistics/statistics",
+    "pages/challenge/challenge",
+    "pages/ranking/ranking",
+    "pages/share/share"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarBackgroundColor": "#667eea",
+    "navigationBarTitleText": "手势解锁挑战",
+    "navigationBarTextStyle":"white"
   }
 }

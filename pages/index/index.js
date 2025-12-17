@@ -20,5 +20,23 @@ Page({
     this.setData({
       data: data.detail
     });
+  },
+  // 导航到手势挑战页面
+  goToChallenge() {
+    wx.navigateTo({
+      url: '/pages/challenge/challenge'
+    });
+  },
+  // 导航到排行榜页面
+  goToRanking() {
+    wx.navigateTo({
+      url: '/pages/ranking/ranking'
+    });
+  },
+  // 导航到手势分享页面
+  goToShare() {
+    wx.navigateTo({
+      url: '/pages/share/share'
+    });
   }
 })
